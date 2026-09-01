@@ -1,0 +1,54 @@
+% PostScript
+
+/r <QCConst>image_len</QCConst> string def
+% the single space after exec is where the image starts; it cannot be removed
+{currentfile r readstring pop pop}exec <QCImage/>
+/y[99{0}repeat]def
+/b{dup <QCConst>image_len</QCConst> lt{r exch get}{pop 0}ifelse}def
+/c 0 def
+(ps)ARGUMENTS{}forall{y c 8 mod 3 -1 roll put/c dup load 1 add def}forall
+/s <QCConst>entrypoint</QCConst> def/p 0 def/g 0 def/a 0 def/d 7 def
+{
+  s <QCConst>image_len</QCConst> ge{exit}if
+  /c s b def/s dup load 1 add def
+  a 0 ne
+  {
+    a 0 lt
+    {
+      c 47 ne
+      {c 72 eq{/c s b 33 sub def/s dup load 1 add def}if c ( )dup 0 4 -1 roll put print}
+      {/a 0 def}
+      ifelse
+    }
+    {c 2 idiv 20 eq{/a a 81 add c 2 mul sub def}if}
+    ifelse
+  }
+  {
+    c 34 lt
+    {/a -1 def}
+    {c 39 lt
+      {/g p b def/p dup load 1 add def}
+      {c 41 lt
+        {g 0 ne{/d dup load 1 add def y d s put}{/a 1 def}ifelse}
+        {c 42 lt
+          {g 0 ne{/s y d get def}{/d d 1 sub def}ifelse}
+          {c 43 lt
+            {g ( )dup 0 4 -1 roll put print}
+            {c 56 lt
+              {y c 8 mod g put}
+              {c 64 lt
+                {/g y c 8 mod get def}
+                {c 72 lt
+                  {/g g y c 8 mod get sub def}
+                  {/g c def}
+                  ifelse}
+                ifelse}
+              ifelse}
+            ifelse}
+          ifelse}
+        ifelse}
+      ifelse}
+    ifelse
+  }
+  ifelse
+}loop

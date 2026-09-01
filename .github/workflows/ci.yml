@@ -1,0 +1,17 @@
+name: CI
+on:
+  - push
+  - pull_request
+  - workflow_dispatch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: docker build
+        run: docker build -t quine-clique .
+      - name: make test-all
+        run: docker run --rm quine-clique make test-all -j$(nproc)

@@ -1,0 +1,28 @@
+# Backstage chores; none of these belong in the top-level Makefile
+#
+#   rake -f src/Rakefile qc.rb        rebuild qc.rb (fixed-point search)
+#   rake -f src/Rakefile Makefile     regenerate the top-level Makefile
+#   rake -f src/Rakefile images         regenerate the README figures and the thumbnail
+#   rake -f src/Rakefile conf         QCLang conformance check (all members)
+
+TOP = File.expand_path("..", __dir__)
+SRC = File.expand_path(__dir__)
+
+def sh_in_top(*cmd) = Dir.chdir(TOP) { sh(*cmd) }
+
+file "#{TOP}/qc.rb" => FileList["#{SRC}/**/*"] do
+  sh_in_top "ruby", "--yjit", "src/qc.rb.gen.rb"
+end
+
+file "#{TOP}/Makefile" => ["#{SRC}/Makefile.gen.rb", "#{SRC}/lib/langs.rb"] do
+  sh_in_top "ruby", "src/Makefile.gen.rb"
+end
+
+task "qc.rb"    => "#{TOP}/qc.rb"
+task "Makefile" => "#{TOP}/Makefile"
+
+desc "README figures and the thumbnail"
+task(:images) { sh_in_top "ruby", "src/images.gen.rb" }
+
+desc "QCLang conformance check (all members)"
+task(:conf) { sh_in_top "ruby", "src/test/conformance.rb" }

@@ -1,0 +1,39 @@
+% Octave
+
+g=[+"<QCImage/>" 0];
+r=zeros(1,99);
+% Put the name (the default key if no argument) into r0..
+z=[argv();{"octave"}]{1};
+r(1:length(z))=z;
+i=<QCConst>entrypoint</QCConst>+1;p=1;a=0;s=9;
+while i<=<QCConst>image_len</QCConst>;
+  c=g(i);
+  i+=1;
+  % 33 !.../ literal (the Hc -> c-33 escape happens only here)
+  if c<34;
+    while g(i)!=47;c=g(i);i+=1;if c==72;c=g(i)-33;i+=1;end;fwrite(1,c);end;
+    i+=1;
+  % 38 & READ (0 past the end)
+  elseif c<39;
+    a=g(p);p+=1;
+  % 40 ( loop start; if acc==0, skip to the matching )
+  elseif c<41;
+    r(s)=i;s+=1;d=1;
+    while d>0;
+      i+=1;
+      c=g(i);
+      if fix(c/2)==20;d+=81-2*c;end;
+    end;
+  % 41 ) loop end; if acc!=0, jump back to the start
+  elseif c<42;
+    s-=1;
+    if a!=0;i=r(s);s+=1;end;
+  % 42 * output one byte / 48..55 store
+  elseif c<43;fwrite(1,a);
+  elseif c<56;r(mod(c,8)+1)=a;
+  % 56..63 load / 64..71 sub / 72..126 immediate
+  elseif c<64;a=r(mod(c,8)+1);
+  elseif c<72;a=a-r(mod(c,8)+1);
+  else;a=c;
+  end;
+end

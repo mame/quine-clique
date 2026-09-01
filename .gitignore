@@ -1,0 +1,9 @@
+/qc.*
+!/qc.rb
+/build/
+/output/
+/vendor/bin/
+/src/test/tmp/
+/tmp/
+.claude/
+/.Random.seed
