@@ -55,6 +55,8 @@ A [clique](https://en.wikipedia.org/wiki/Clique_(graph_theory)) of quines.
 
 <img alt="Quine Clique" src="images/logo.png">
 
+[&#9654; Video explanation (9 min)](https://www.youtube.com/watch?v=3f2wV7Odq8E)
+
 ## Quine Clique 101
 
 ### Ruby Quine
@@ -220,7 +222,7 @@ Why not?
 
 ### How?
 
-See [docs/internal.md](docs/internal.md).
+See [docs/internal.md](docs/internal.md), or [watch the video](https://www.youtube.com/watch?v=3f2wV7Odq8E).
 
 ## Related work
 
